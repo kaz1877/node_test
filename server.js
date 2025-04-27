@@ -6,6 +6,9 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 8080;
 
+// 静的ファイルの提供
+app.use(express.static('public'));
+
 // Cloud Storageの設定
 const storage = new Storage();
 const bucket = storage.bucket(process.env.BUCKET_NAME || 'your-bucket-name');
@@ -18,8 +21,9 @@ const upload = multer({
   },
 });
 
+// ルートパスでindex.htmlを提供
 app.get('/', (req, res) => {
-  res.send('Hello from Cloud Run!');
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // ファイルアップロード用のエンドポイント
